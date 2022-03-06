@@ -1,9 +1,6 @@
 # bindo_python_ocr
 Python Modules for John to integrate
 
-# bindo_python_ocr
-Python Modules for John to integrate
-
 Process:
 
   0. [Optional] Create a virtual environment to for this project.
