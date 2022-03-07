@@ -14,6 +14,10 @@ Process:
 
       b. Nanonets URL
 
-  3. Run code via python main.py (make sure you are at the main.py level when you execute this command.)
+  3. Run code & supply arguments e.g: 
+  ```
+  python main.py --nar-file="./Samples/Better_World_Development.pdf" --output-file="nar-output.json" 
+  ```
+  (make sure you are at the main.py level when you execute it.)
 
 Let me know if you run into any issues. 
