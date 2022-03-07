@@ -14,6 +14,13 @@ from constants import (TEMP_DIR, LOGS_DIR,
 CWD = os.getcwd()
 
 # Utilities
+
+def ensure_logs_directory():
+    """Create/Confirm logs directory"""
+    if not(os.path.exists(LOGS_DIR)):
+        os.makedirs(LOGS_DIR)
+        
+
 def house_keeping():
     """Create Temp folder if not exists. Otherwise empty it. Also create LOGS folder"""
     if os.path.exists(TEMP_DIR):
@@ -31,11 +38,6 @@ def house_keeping():
         logging.info('%s folder does not exist', TEMP_DIR)
         os.makedirs(TEMP_DIR)
         logging.info('%s folder created.', TEMP_DIR)
-
-    if not(os.path.exists(LOGS_DIR)):
-        logging.info('%s folder does not exist', LOGS_DIR)
-        os.makedirs(LOGS_DIR)
-        logging.info('%s folder created.', LOGS_DIR)
 
     logging.info('house_keeping() function executed successfully.')
 
