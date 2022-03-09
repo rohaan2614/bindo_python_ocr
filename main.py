@@ -29,13 +29,13 @@ logging.info('MAIN.PY: LOGGER INITIALIZED at %s',  DATETIME_STRING)
 house_keeping()
 
 # read arguments
-PARSER = argparse.ArgumentParser(description= 'example: --nar-file="./Samples/Better_World_Development.pdf" --output-file="nar-output.json"')
-PARSER.add_argument('--nar-file', help = 'NAR document path')
-PARSER.add_argument('--output-file', help = 'output json path')
+PARSER = argparse.ArgumentParser(description= 'example: --in-file="./Samples/Better_World_Development.pdf" --out-file="nar-output.json"')
+PARSER.add_argument('--in-file', help = 'in document path')
+PARSER.add_argument('--out-file', help = 'output json path')
 arguments = PARSER.parse_args()
 
 # Generate images
-page_count = pdf_to_images(pdf_file_path=arguments.nar_file)
+page_count = pdf_to_images(pdf_file_path=arguments.in_file)
 
 # Get Nanonets response
 images = os.listdir(TEMP_DIR)
@@ -45,8 +45,7 @@ for page in range(0, page_count):
     RESPONSES[str(page)] = get_nanonets_response(input_image=input_image)
 
 # Write output
-with open(arguments.output_file, "w") as outfile:
-#     outfile.write(str(RESPONSES))
+with open(arguments.out_file, "w") as outfile:
     json.dump(RESPONSES, outfile)
     logging.info('Data dumped to output Json file.')
     print('Ouput Json saved.')
