@@ -133,4 +133,4 @@ TEMP/
 LOGS/
 config.cfg
 nar-output.json
-br_clean.py
+json_clean.py

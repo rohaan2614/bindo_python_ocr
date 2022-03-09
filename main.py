@@ -9,7 +9,7 @@ import json
 from constants import TEMP_DIR, LOGS_DIR
 from utils import (house_keeping, pdf_to_images, 
                    get_nanonets_response, ensure_logs_directory,
-                   clean_br_json)
+                   clean_br_json, clean_nn_json)
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -47,11 +47,11 @@ for page in range(0, page_count):
 
 if 'br_' in arguments.in_file.lower():
     RESPONSES = clean_br_json(RESPONSES)
+elif 'nnar_' in arguments.in_file.lower() or 'nnac' in arguments.in_file.lower():
+    RESPONSES = clean_nn_json(RESPONSES)
 
 # Write output
 with open(arguments.out_file, "w") as outfile:
     json.dump(RESPONSES, outfile)
     logging.info('Data dumped to output Json file.')
     print('Ouput Json saved.')
-
-# python main.py --in-file="./Samples/BR_G.D.D.F Limited (Vinque Lux).pdf" --out-file="test-br-output.json"

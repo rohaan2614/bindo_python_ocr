@@ -70,8 +70,34 @@ def get_nanonets_response(input_image):
     logging.info('     Response received.')
     return response.json()
 
+def has_increment (text):
+    try:
+        int(text)
+        return True
+    except ValueError:
+        return False
+
+def find_increment(key_text, dict_instance):
+    """split key text into str & int"""
+    int_part = key_text.split('_')[-1]
+    partitioned_key = key_text.rpartition('_')
+
+    if has_increment(int_part):
+        new_increment = int(partitioned_key[-1]) + 1
+        new_key = partitioned_key[0] + '_' +str(new_increment)
+        if new_key in dict_instance.keys():
+            return find_increment(key_text=new_key, dict_instance=dict_instance)
+        else:
+            print(f'New increment identified: {new_key}')
+            return new_key
+    else:
+        key_text = key_text + '_' + str(1)
+        if key_text in dict_instance.keys():
+            return find_increment(key_text, dict_instance)
+        return key_text
+
 def clean_br_json(raw_br_json):
-    """Returns clean BR json"""
+    """Return clean BR json"""
 
     br_clean = {}
 
@@ -82,5 +108,36 @@ def clean_br_json(raw_br_json):
             for prediction in result['prediction']:
                 if 'BR' in prediction['label']:
                     br_clean[prediction['label']] = prediction['ocr_text']
-    
     return br_clean
+
+def clean_nn_json(raw_nn_json):
+    """Return Clean NNAR-1 & NNAC-1 json"""
+
+    clean_nn = {}
+
+    for iterator, key in enumerate(raw_nn_json.keys()):
+        page_fields = raw_nn_json[key]
+        page_results = page_fields['result']
+        for result in page_results:
+            page_array = {}
+            for prediction in result['prediction']:
+                if 'NN' in prediction['label']:
+                    field_key = prediction['label']
+                    if field_key in page_array.keys():
+                        field_key = find_increment(field_key, page_array)
+                    page_array[field_key] = prediction['ocr_text']
+
+                if prediction['label'] == 'table':
+                    table_array = {}
+                    for cell in prediction['cells']:
+                        field_key = cell['label']
+                        if field_key in table_array.keys():
+                            field_key = find_increment(field_key, table_array)
+                        table_array[field_key] = cell['text']
+                    field_key = prediction['label']
+                    if field_key in page_array.keys():
+                        field_key = find_increment(field_key, page_array)
+                    page_array[field_key] = table_array
+        clean_nn[iterator] = page_array
+
+    return clean_nn
