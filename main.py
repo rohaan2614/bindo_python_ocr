@@ -8,7 +8,8 @@ import argparse
 import json
 from constants import TEMP_DIR, LOGS_DIR
 from utils import (house_keeping, pdf_to_images, 
-                   get_nanonets_response, ensure_logs_directory)
+                   get_nanonets_response, ensure_logs_directory,
+                   clean_br_json)
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -44,8 +45,13 @@ for page in range(0, page_count):
     input_image = f'{TEMP_DIR}/{images[page]}'
     RESPONSES[str(page)] = get_nanonets_response(input_image=input_image)
 
+if 'br_' in arguments.in_file.lower():
+    RESPONSES = clean_br_json(RESPONSES)
+
 # Write output
 with open(arguments.out_file, "w") as outfile:
     json.dump(RESPONSES, outfile)
     logging.info('Data dumped to output Json file.')
     print('Ouput Json saved.')
+
+# python main.py --in-file="./Samples/BR_G.D.D.F Limited (Vinque Lux).pdf" --out-file="test-br-output.json"

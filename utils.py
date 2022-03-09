@@ -69,3 +69,18 @@ def get_nanonets_response(input_image):
     print('     Response received.')
     logging.info('     Response received.')
     return response.json()
+
+def clean_br_json(raw_br_json):
+    """Returns clean BR json"""
+
+    br_clean = {}
+
+    for iterator, key in enumerate(raw_br_json.keys()):
+        page_fields = raw_br_json[key]
+        page_results = page_fields['result']
+        for result in page_results:
+            for prediction in result['prediction']:
+                if 'BR' in prediction['label']:
+                    br_clean[prediction['label']] = prediction['ocr_text']
+    
+    return br_clean

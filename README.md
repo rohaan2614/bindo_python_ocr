@@ -21,3 +21,9 @@ Process:
   (make sure you are at the main.py level when you execute it.)
 
 Let me know if you run into any issues. 
+
+
+Updates:
+
+1. in & out files are to be passed as arguments
+2. BR json cleaning integrated (only passes relevant fields to the output)
