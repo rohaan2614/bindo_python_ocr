@@ -134,3 +134,4 @@ LOGS/
 config.cfg
 nar-output.json
 json_clean.py
+nar-sample-output.json

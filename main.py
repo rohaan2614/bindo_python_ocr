@@ -30,9 +30,10 @@ logging.info('MAIN.PY: LOGGER INITIALIZED at %s',  DATETIME_STRING)
 house_keeping()
 
 # read arguments
-PARSER = argparse.ArgumentParser(description= 'example: --in-file="./Samples/Better_World_Development.pdf" --out-file="nar-output.json"')
+PARSER = argparse.ArgumentParser(description= 'example: --in-file="./Samples/Better_World_Development.pdf" --out-file="nar-output.json --doc-type="br"')
 PARSER.add_argument('--in-file', help = 'in document path')
 PARSER.add_argument('--out-file', help = 'output json path')
+PARSER.add_argument('--doc-type', help = 'type of document')
 arguments = PARSER.parse_args()
 
 # Generate images
@@ -45,9 +46,9 @@ for page in range(0, page_count):
     input_image = f'{TEMP_DIR}/{images[page]}'
     RESPONSES[str(page)] = get_nanonets_response(input_image=input_image)
 
-if 'br_' in arguments.in_file.lower():
+if 'br_' in arguments.doc_type.lower():
     RESPONSES = clean_br_json(RESPONSES)
-elif 'nnar_' in arguments.in_file.lower() or 'nnac' in arguments.in_file.lower():
+elif 'nnar_' in arguments.doc_type.lower() or 'nnac' in arguments.doc_type.lower():
     RESPONSES = clean_nn_json(RESPONSES)
 
 # Write output
